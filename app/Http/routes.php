@@ -13,6 +13,7 @@
 
 Route::get('/', 'PagesController@home');
 
+Route::get('recipes/create/confirm', 'RecipesController@confirm');
 Route::resource('recipes', 'RecipesController');
 
 Route::controllers([
