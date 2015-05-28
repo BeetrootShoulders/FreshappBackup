@@ -22,8 +22,8 @@ class PrepareRecipeRequest extends Request {
 	public function rules()
 	{
 		return [
-			'recipe_title' => 'required',
-			'category' => 'required',
+			'recipe_name' => 'required',
+			'category_id' => 'required',
 			'ingredients' => 'required',
 			'method' => 'required',
 		];

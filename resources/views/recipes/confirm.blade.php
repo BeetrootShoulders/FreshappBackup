@@ -3,7 +3,7 @@
 @section('content')
 	<h1 class="page-heading">Review the recipe before submitting</h1>
 	
-	{!! Form::open() !!}
+	{!! Form::open(['action' => 'RecipesController@store']) !!}
 
 		<div class="form-group">
 			{!! Form::label('template', 'Recipe:') !!}
@@ -15,4 +15,6 @@
 		</div>
 
 	{!! Form::close() !!}
+
+	@include('errors.list')
 @stop

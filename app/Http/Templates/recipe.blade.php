@@ -1,4 +1,4 @@
-{{ $recipe_title }}
+{{ $recipe_name }}
 
 Ingredients
 {{ $ingredients }}

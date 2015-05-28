@@ -6,13 +6,13 @@
 
 	{!! Form::open(['method' => 'GET', 'action' => 'RecipesController@confirm']) !!}
 		<div class="form-group">
-			{!! Form::label('recipe_title','Recipe Title:') !!}
-			{!! Form::text('recipe_title', null, ['class' => 'form-control']) !!}
+			{!! Form::label('recipe_name','Recipe Title:') !!}
+			{!! Form::text('recipe_name', null, ['class' => 'form-control']) !!}
 		</div>
 
 		<div class="form-group">
-			{!! Form::label('category','Category:') !!}
-			{!! Form::select('category', $categories, null, ['class' => 'form-control']) !!}
+			{!! Form::label('category_id','Category:') !!}
+			{!! Form::select('category_id', $categories, null, ['class' => 'form-control']) !!}
 		</div>
 
 		<div class="form-group">
