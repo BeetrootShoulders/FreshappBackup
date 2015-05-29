@@ -12,57 +12,57 @@ class RecipesController extends Controller {
 
 	public function  __construct()
 	{
-		$this->middleware('auth');
+		$this->middleware('auth'); // enable authorisation middleware (ie logins)
 	}
 
 	public function index()
 	{
-		return \Auth::user()->recipes;
+		return \Auth::user()->recipes; // show all recipes for the logged in user
 	}
 
 	public function create()
 	{
-		$categories = Category::lists('name','id');
+		$categories = Category::lists('name','id'); // build an array designed for easy output as a dropdown
 		// load a view to create a new recipe
-		return view ('recipes.create', compact('categories'));
+		return view ('recipes.create', compact('categories')); // load the create recipe view, passing in the dropdown array
 	}
 
 	public function confirm(Requests\PrepareRecipeRequest $request)
 	{
-		$data = $request->all() + [
-			'name' => \Auth::user()->name
+		$data = $request->all() + [ // grab all the data in the GET request and append...
+			'name' => \Auth::user()->name // the name from the currently logged in user
 		];
-		$template  = view()->file(app_path('Http/Templates/recipe.blade.php'), $data);
+		$template  = view()->file(app_path('Http/Templates/recipe.blade.php'), $data); // fill the template from the path with the data
 
 		session()->flash('recipe', $data); // temporarily add the data to a session so it can be grabbed by our Store method
 
-		return view('recipes.confirm', compact('template'));
+		return view('recipes.confirm', compact('template')); // return the view
 	
 	}
 
-	public function store(Request $request)
+	public function store(Request $request) // store the data in the database (this method called from the confirm form)
 	{
-		$recipe = $this->createRecipe($request);
+		$recipe = $this->createRecipe($request); // call the createRecipe method below...
 
-		Mail::queue('emails.recipe', compact('recipe'), function($message){
-			$message->from($recipe->getOwnerEmail())
-					->to('webmaster@continuityshop.com')
-					->subject('New recipe!');
+		Mail::queue('emails.recipe', compact('recipe'), function($message){ //queue up a new e-mail using the template in views/emails called recipe, pass it the recipe var, then..
+			$message->from($recipe->getOwnerEmail()) // set from
+					->to('webmaster@continuityshop.com') // set to
+					->subject('New recipe!'); // set subject
 		});
 
 
-		return redirect('recipes');
+		return redirect('recipes'); // redirect to 'recipes' which calls the index method above
 
 		
 	}
 
 	private function createRecipe(Request $request)
 	{
-		$recipe = session()->get('recipe') + ['template' => $request->input('template')];
+		$recipe = session()->get('recipe') + ['template' => $request->input('template')]; // get information from the session create in the confirm method, append template.
 
-		$recipe = \Auth::user()->recipes()->create($recipe);
+		$recipe = \Auth::user()->recipes()->create($recipe); // save the recipe using the logged in user's id
 
-		return $recipe;
+		return $recipe; //return it
 	}
 }
 
